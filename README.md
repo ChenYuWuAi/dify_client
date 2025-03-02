@@ -16,7 +16,7 @@
 
 2. 修改脚本内容
 
-修改`dify_api_server.py`中`第123行`为你的API密钥。
+修改`dify_api_server.py`中`第81行`为你的API密钥。
 ```python
 self.headers = {
    "Authorization": "Bearer #### 请在这里粘贴你的 API 密钥",
