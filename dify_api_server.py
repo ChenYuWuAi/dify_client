@@ -84,6 +84,7 @@ class ChatClient:
         self.conversation_id = None
         self.parent_message_id = None
         self.current_message_id = None  # 保存当前消息 ID 用于停止请求
+        self.current_task_id = None
         self.running = False
 
     def reset_conversation(self):
@@ -119,8 +120,8 @@ class ChatClient:
     def send_stop_request(self):
         """向后端发送停止请求"""
         print("Sending stop request...")
-        if self.current_message_id:
-            stop_url = self.stop_url_template.format(self.current_message_id)
+        if self.current_task_id:
+            stop_url = self.stop_url_template.format(self.current_task_id)
             try:
                 requests.post(stop_url, headers=self.headers, json={}, verify=False)
             except requests.exceptions.RequestException as e:
@@ -159,6 +160,7 @@ class ChatClient:
                                     if self.running:
                                         self.conversation_id = event_data.get('conversation_id')
                                         self.parent_message_id = event_data.get('message_id')
+                                        self.current_task_id = event_data.get('task_id')
                                     chunk = {
                                         "id": "chatcmpl-" + str(uuid.uuid4()),
                                         "object": "chat.completion.chunk",
